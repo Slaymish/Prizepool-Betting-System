@@ -131,11 +131,11 @@ namespace Bettingtest
             this.label3.AutoSize = true;
             this.label3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(28, 28);
+            this.label3.Location = new System.Drawing.Point(12, 19);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(158, 33);
+            this.label3.Size = new System.Drawing.Size(209, 33);
             this.label3.TabIndex = 9;
-            this.label3.Text = "Echo Better";
+            this.label3.Text = "Prizepool Better";
             // 
             // label4
             // 
