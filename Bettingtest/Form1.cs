@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Bettingtest
 {
@@ -15,10 +16,10 @@ namespace Bettingtest
 
         // Declare Variables
         decimal prizepool;
-        decimal teamATotal;
-        decimal teamBTotal;
         decimal teamA;
         decimal teamB;
+        const string FILTER = "txt files | *.txt | All files | *.*";
+        string odds;
 
         // Declare lists
         List<string> betterName = new List<string>();
@@ -36,6 +37,7 @@ namespace Bettingtest
             // Declare Variables
             string name;
             decimal betAmount;
+        
 
             try
             {
@@ -53,7 +55,6 @@ namespace Bettingtest
 
                     Update_Lists();
                     Odd_Prizepool();
-
 
                 }
                 else
@@ -77,7 +78,7 @@ namespace Bettingtest
 
             listBox1.Items.Clear();
 
-            listBox1.Items.Add("Name" + "Initial".PadLeft(10) + "Payout".PadLeft(10));
+            listBox1.Items.Add("Name".PadRight(20) + "Initial".PadLeft(20) + "Payout".PadLeft(20));
             bet = 0;
             payout = 0;
             ratio = 0;
@@ -104,7 +105,7 @@ namespace Bettingtest
                     payout = prizepool * ratio;
 
 
-                    listBox1.Items.Add(name + bet.ToString("c").PadLeft(10) + payout.ToString("c").PadLeft(10));
+                    listBox1.Items.Add(name.PadRight(20) + bet.ToString("c").PadLeft(20) + payout.ToString("c").PadLeft(20));
                 }
                 
             }
@@ -174,7 +175,8 @@ namespace Bettingtest
             }
 
             // Calculate odds
-            textBoxOdds.Text = teamA.ToString() + " to " + teamB.ToString();
+            odds = teamA.ToString() + " to " + teamB.ToString();
+            textBoxOdds.Text = odds;
 
             textBoxPrizepool.Text = prizepool.ToString("c");
 
@@ -205,6 +207,128 @@ namespace Bettingtest
             betterAmount.Clear();
             betterName.Clear();
             betterTeam.Clear();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void saveOddsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Declare variables
+            StreamWriter writer;
+
+            // Set dialogs filter
+            saveFileDialog1.Filter = FILTER;
+
+            if (odds != null)
+            {
+
+                // If save file opens and ok is selected
+                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    // Create new file from user given file name
+                    writer = File.CreateText(saveFileDialog1.FileName);
+
+                    writer.WriteLine("FORMAT: NAME|BET AMOUNT");
+                    writer.WriteLine(' ');
+                    writer.WriteLine("Bets on Team A");
+                    for (int i = 0; i < betterAmount.Count; i++)
+                    {
+                        if (betterTeam[i] == 'A')
+                        {
+                            writer.WriteLine(betterName[i] + "|" + betterAmount[i]);
+                        }
+
+                    }
+                    writer.WriteLine(' ');
+
+                    writer.WriteLine("Bets on Team B");
+                    for (int i = 0; i < betterAmount.Count; i++)
+                    {
+                        if (betterTeam[i] == 'B')
+                        {
+                            writer.WriteLine(betterName[i] + "|" + betterAmount[i]);
+                        }
+
+                    }
+
+                    writer.WriteLine(' ');
+                    writer.WriteLine("Prizepool: " + prizepool.ToString("c"));
+                    writer.WriteLine("Odds: " + odds + " (team A to team B)");
+
+                    // Close text
+                    writer.Close();
+
+                }
+            }
+            else
+            {
+                MessageBox.Show("Place some bets first!");
+            }
+        }
+
+        private void savePayoutsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Declare variables
+            StreamWriter writer;
+
+            // Set dialogs filter
+            saveFileDialog1.Filter = FILTER;
+
+            if (odds != null)
+            {
+                if (listBox1.Items.Count >= 1)
+                {
+                    // If save file opens and ok is selected
+                    if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                    {
+                        // Create new file from user given file name
+                        writer = File.CreateText(saveFileDialog1.FileName);
+
+                        writer.WriteLine("FORMAT: NAME|INTIAL|PAYOUT");
+                        writer.WriteLine(' ');
+                        writer.WriteLine("Bets");
+                        for (int i = 0; i < listBox1.Items.Count; i++)
+                        {
+                            writer.WriteLine(listBox1.Items[i]);
+
+                        }
+
+                        writer.WriteLine(' ');
+                        writer.WriteLine("Ending Prizepool: " + prizepool.ToString("c"));
+                        writer.WriteLine("Ending Odds: " + odds + " (team A to team B)");
+
+                        writer.WriteLine(" ");
+                        writer.WriteLine("EVERYONE NOT ON LIST, THEIR PAYOUT IS $0");
+
+                        // Close text
+                        writer.Close();
+
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Confirm which team won first!");
+                }
+
+
+            }
+            else
+            {
+                MessageBox.Show("Place some bets first!");
+            }
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
