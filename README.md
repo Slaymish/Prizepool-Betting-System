@@ -3,4 +3,4 @@ A mini app that can add people, and their bet amounts, then correctly distribute
 
 To run, open in visual studio then build your own solution.
 
-My contact details are here: https://wlo.link/@slaymish (as well as a tipper :p)
+My details are here: https://wlo.link/@slaymish
